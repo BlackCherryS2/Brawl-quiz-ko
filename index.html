@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>브롤스타즈 106 브롤러 퀴즈 · 한국어 랭킹판</title>
+<meta name="description" content="브롤스타즈 106명 전체 브롤러 이름 맞히기 한국어판 · 기록 저장 · 랭킹 · 카카오톡 공유" />
+<style>
+:root{
+  --ink:#151515;--panel:rgba(255,255,255,.96);--shadow:0 8px 24px rgba(0,0,0,.18);
+  --starter:#9e9e9e;--rare:#31c64b;--superrare:#19a8f5;--epic:#ad4cf4;--mythic:#ef4040;--legendary:#f7cd16;--ultra:#f157c9;
+  --blue:#178bd2;--yellow:#ffd520;--danger:#921313;--kakao:#fee500;--green:#25a34a;
+}
+*{box-sizing:border-box} html,body{min-height:100%;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans KR",Arial,sans-serif;color:var(--ink);background:linear-gradient(rgba(77,183,241,.08),rgba(77,183,241,.08)),url("https://raw.githubusercontent.com/nyar44/brawl-character-quiz/main/images/background.jpg") center/cover fixed no-repeat,#68c8ef;overflow-x:hidden}
+button,input{font:inherit}.hidden{display:none!important}
+.page{min-height:100vh;padding:10px 10px 24px}.title{margin:5px 0 8px;text-align:center;font-family:Impact,"Arial Black",system-ui,sans-serif;font-size:clamp(22px,4vw,38px);font-weight:900;letter-spacing:-.4px;color:#101010;text-shadow:0 2px 0 rgba(255,255,255,.55)}
+.top-tools{width:min(1100px,calc(100vw - 20px));margin:0 auto 8px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.session-pill{display:flex;align-items:center;gap:6px;padding:6px 9px;background:rgba(255,255,255,.92);border:2px solid rgba(0,0,0,.13);border-radius:999px;font-size:12px;font-weight:900;box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#999}.status-dot.cloud{background:#18a64a}.status-dot.guest{background:#f39c12}
+.tool-buttons{display:flex;gap:5px;flex-wrap:wrap}.mini-btn{padding:7px 10px;border:2px solid #242424;border-radius:9px;background:#fff;font-size:11px;font-weight:900;cursor:pointer}.mini-btn.primary{background:#1d8ed2;color:#fff}.mini-btn.danger{background:#b72b2b;color:#fff}
+.game-bar{width:min(1100px,calc(100vw - 20px));margin:0 auto 10px;padding:10px 12px;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;background:var(--panel);border:2px solid rgba(0,0,0,.12);border-radius:16px;box-shadow:var(--shadow)}
+#answer{width:min(330px,44vw);height:44px;padding:0 12px;border:2px solid #303030;border-radius:8px;font-size:18px;font-weight:750;outline:none;background:#fff;color:#111}#answer:focus{border-color:#0e8bd7;box-shadow:0 0 0 3px rgba(14,139,215,.15)}
+.action{height:44px;padding:0 18px;border:2px solid #222;border-radius:9px;font-weight:900;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.2);transition:transform .08s ease,filter .08s ease}.action:active{transform:translateY(1px)}.answer-btn{background:var(--yellow)}.giveup-btn{background:var(--danger);color:#fff;border-color:#5e0808}.action:disabled{opacity:.48;cursor:not-allowed;filter:grayscale(.35)}
+.game-info{font-size:15px;font-weight:900;white-space:nowrap;padding:0 3px}#timer{font-variant-numeric:tabular-nums}
+.toast{width:min(640px,calc(100vw - 24px));height:0;margin:0 auto;text-align:center;font-weight:900;overflow:visible;pointer-events:none;position:relative;z-index:12000}.toast span{display:inline-block;opacity:0;transform:translateY(-6px);padding:6px 11px;border-radius:999px;color:#fff;background:#222;box-shadow:0 4px 12px rgba(0,0,0,.22);transition:.18s ease}.toast.show span{opacity:1;transform:translateY(0)}.toast.good span{background:#168a36}.toast.bad span{background:#b72828}.toast.dup span{background:#575757}
+.character-grid{display:grid;grid-template-columns:repeat(15,65px);gap:6px;justify-content:center;width:min(1100px,100%);margin:14px auto 18px}.character{width:65px;height:80px;position:relative;overflow:hidden;background:#15222a;border:3px solid var(--starter);box-shadow:0 2px 5px rgba(0,0,0,.24)}.character.rare{border-color:var(--rare)}.character.superrare{border-color:var(--superrare)}.character.epic{border-color:var(--epic)}.character.mythic{border-color:var(--mythic)}.character.legendary{border-color:var(--legendary)}.character.ultra{border-color:var(--ultra)}
+.portrait{width:100%;height:100%;display:block;object-fit:cover;background:linear-gradient(135deg,#17384d,#5f9bc0)}.character:not(.answered) .portrait{object-fit:fill}.number{position:absolute;top:2px;left:4px;z-index:4;color:#fff;font-size:10px;font-weight:1000;text-shadow:0 1px 3px #000,0 0 2px #000;line-height:1}.character-name{display:none}.character.answered{display:grid;grid-template-rows:minmax(0,1fr) 15px}.character.answered .portrait{width:100%;height:100%;min-height:0;object-fit:cover}.character.answered .character-name{display:block;height:15px;line-height:15px;padding:0 1px;background:rgba(0,0,0,.9);color:#fff;font-size:8px;font-weight:1000;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:clip}.character.revealed-missed .portrait{filter:grayscale(100%);opacity:.53}.character.flash{animation:pop .32s ease}@keyframes pop{0%{transform:scale(.9)}55%{transform:scale(1.1)}100%{transform:scale(1)}}
+.sound-setting{position:fixed;right:10px;top:8px;z-index:5000;display:flex;flex-direction:column;align-items:center;gap:2px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45))}.sound-title{font-size:12px;line-height:1;font-weight:1000;color:#eaff00}.sound-toggle{display:flex}.sound-btn{width:39px;height:25px;padding:0;border:1px solid #222;background:#555;color:#fff;font-size:10px;font-weight:1000;cursor:pointer}.sound-btn:first-child{border-radius:6px 0 0 6px}.sound-btn:last-child{border-radius:0 6px 6px 0}.sound-btn.active-on{background:#0cbe29}.sound-btn.active-off{background:#d22020}
+.modal-backdrop{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.5);backdrop-filter:blur(3px)}.modal-backdrop.show{display:flex}.modal{width:min(480px,calc(100vw - 28px));max-height:90vh;overflow:auto;padding:23px 22px 20px;background:#fff;border:4px solid #111;border-radius:20px;text-align:center;box-shadow:0 14px 38px rgba(0,0,0,.36)}.modal.wide{width:min(720px,calc(100vw - 28px))}.modal h2{margin:0 0 8px;font-size:29px;line-height:1.08}.score-big{font-size:36px;font-weight:1000;line-height:1.1}.time-row{margin-top:9px;font-size:21px;font-weight:950}.time-value{color:#1faf47;font-size:28px;font-variant-numeric:tabular-nums}.comment{margin:13px 0 16px;font-weight:900;font-size:14px}.modal-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.modal-actions button{height:40px;padding:0 14px;border:2px solid #111;border-radius:10px;font-weight:900;cursor:pointer}.close-btn{background:#e53d36;color:#fff}.share-btn{background:var(--kakao);color:#191919}.restart-btn{background:var(--green);color:#fff}.giveup-title{color:#d10c0c}
+.start-card{width:min(470px,calc(100vw - 28px));padding:26px 24px 22px;background:rgba(255,255,255,.98);border:4px solid #111;border-radius:22px;box-shadow:0 16px 45px rgba(0,0,0,.36);text-align:center}.start-logo{font-family:Impact,"Arial Black",sans-serif;font-size:31px;font-weight:900}.start-sub{font-weight:800;font-size:13px;line-height:1.5;margin:7px 0 17px;color:#3a3a3a}.login-form{display:grid;gap:9px}.login-form input{width:100%;height:46px;border:2px solid #333;border-radius:10px;padding:0 12px;font-size:16px;font-weight:800;outline:none}.login-form input:focus{border-color:#168bd2;box-shadow:0 0 0 3px rgba(22,139,210,.15)}.start-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.start-actions button,.guest-start,.continue-btn{height:45px;border:2px solid #111;border-radius:10px;font-weight:950;cursor:pointer}.login-btn{background:#1b8dd1;color:#fff}.register-btn{background:#ffd520}.guest-start{width:100%;margin-top:9px;background:#fff}.continue-btn{width:100%;margin:8px 0;background:#28a64c;color:#fff}.start-note{font-size:10px;line-height:1.45;color:#606060;margin-top:12px}.start-error{min-height:18px;margin-top:7px;color:#c22;font-size:11px;font-weight:900}
+.record-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}.summary-box{padding:10px 6px;border:2px solid #ddd;border-radius:12px;background:#f8f8f8}.summary-box b{display:block;font-size:21px}.summary-box span{font-size:10px;font-weight:900;color:#666}.data-list{display:grid;gap:6px;text-align:left}.data-row{display:grid;grid-template-columns:36px 1fr auto auto;gap:7px;align-items:center;padding:9px 10px;border:1px solid #ddd;border-radius:10px;background:#fafafa;font-size:12px;font-weight:800}.rank-no{font-size:14px;font-weight:1000}.rank-me{background:#fff5b7;border-color:#efcb1e}.muted{color:#777;font-size:11px}.cloud-help{margin:10px 0;padding:9px;border-radius:10px;background:#fff5c5;font-size:11px;line-height:1.5;font-weight:800}
+.disclaimer{width:min(900px,calc(100vw - 30px));margin:18px auto 0;padding:10px 12px;text-align:center;font-size:11px;line-height:1.5;color:#141414;background:rgba(255,255,255,.48);border-radius:10px}.disclaimer a{color:inherit;font-weight:800}.credits{margin-top:4px;opacity:.76}
+@media(max-width:1000px){.character-grid{grid-template-columns:repeat(12,65px)}}
+@media(max-width:820px){.page{padding:6px 0 20px}.title{font-size:20px;margin:4px 0 5px;white-space:nowrap}.top-tools{width:calc(100% - 12px);margin-bottom:5px}.session-pill{font-size:9px;padding:4px 7px}.mini-btn{font-size:9px;padding:5px 7px}.game-bar{width:calc(100% - 12px);padding:6px;gap:4px;border-radius:10px}#answer{width:34%;min-width:0;height:34px;padding:0 7px;font-size:15px}.action{height:34px;padding:0 8px;font-size:10px;border-radius:7px}.game-info{font-size:9px;padding:0 2px}.character-grid{width:100vw;grid-template-columns:repeat(10,calc((100vw - 27px)/10));gap:3px;justify-content:start;margin:5px 0 12px}.character{width:100%;height:auto;aspect-ratio:70/76;box-shadow:none}.number{top:2px;left:2px;font-size:7px}.character.answered{grid-template-rows:minmax(0,1fr) 10px}.character.answered .character-name{height:10px;line-height:10px;font-size:6px}.sound-setting{top:auto;right:8px;bottom:10px}.sound-title{font-size:8px}.sound-btn{width:25px;height:17px;font-size:8px;line-height:15px}.modal{padding:19px 14px}.score-big{font-size:28px}.modal h2{font-size:26px}.time-row{font-size:18px}.time-value{font-size:24px}.comment{font-size:12px}.modal-actions button{height:36px;padding:0 10px;font-size:11px}.disclaimer{font-size:9px}.data-row{grid-template-columns:30px 1fr auto;font-size:10px}.data-row .date-cell{display:none}}
+@media(max-width:420px){.game-bar{gap:3px}.game-info{font-size:8px}#answer{font-size:14px}.action{padding:0 6px;font-size:9px}.start-actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1 class="title">＜브롤스타즈 106 브롤러 전부 말할 수 있을까?＞</h1>
+  <div class="top-tools">
+    <div class="session-pill"><span id="statusDot" class="status-dot guest"></span><span id="sessionLabel">게스트 모드</span></div>
+    <div class="tool-buttons">
+      <button id="recordsBtn" class="mini-btn" type="button">내 기록</button>
+      <button id="rankingBtn" class="mini-btn primary" type="button">랭킹</button>
+      <button id="logoutBtn" class="mini-btn danger hidden" type="button">로그아웃</button>
+    </div>
+  </div>
+  <div class="game-bar">
+    <input id="answer" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="브롤러 이름 입력" aria-label="브롤러 이름 입력" />
+    <button class="action answer-btn" id="answerButton" type="button">정답</button>
+    <button class="action giveup-btn" id="giveUpButton" type="button">기권</button>
+    <div class="game-info">⏱ <span id="timer">00:00</span></div>
+    <div class="game-info">정답：<span id="count">0</span> / 106 &nbsp; 남은 수：<span id="remaining">106</span>명</div>
+  </div>
+  <div id="toast" class="toast" aria-live="polite"><span id="toastText"></span></div>
+  <div id="characterGrid" class="character-grid" aria-label="106명 브롤러 퀴즈 판"></div>
+  <footer class="disclaimer">※ 이 콘텐츠는 비공식 팬 콘텐츠이며 Supercell의 승인·후원·공식 제작물이 아닙니다. <a href="https://supercell.com/en/fan-content-policy/" target="_blank" rel="noopener noreferrer">Supercell 팬 콘텐츠 정책</a>을 준수하는 용도로 제작되었습니다.<div class="credits">한국어 퀴즈 버전 · 원본 퀴즈 구조 참고: nyar44 / brawl-character-quiz</div></footer>
+</div>
+
+<div class="sound-setting" aria-label="효과음 설정"><div class="sound-title">효과음</div><div class="sound-toggle"><button id="soundOnBtn" class="sound-btn active-on" type="button">켜기</button><button id="soundOffBtn" class="sound-btn" type="button">끄기</button></div></div>
+
+<div id="startBackdrop" class="modal-backdrop show" role="dialog" aria-modal="true">
+  <div class="start-card">
+    <div class="start-logo">BRAWL 106 QUIZ</div>
+    <div class="start-sub">닉네임 계정으로 로그인하면 기록이 클라우드에 저장되고 랭킹에 참여할 수 있어요.<br>로그인 없이 게스트로 바로 시작할 수도 있어요.</div>
+    <div id="rememberedWrap" class="hidden"><button id="continueBtn" class="continue-btn" type="button">로그인 계정으로 계속하기</button><div class="muted" id="rememberedText"></div></div>
+    <div class="login-form">
+      <input id="nicknameInput" maxlength="12" autocomplete="username" placeholder="닉네임 (2~12자)" />
+      <input id="passwordInput" type="password" minlength="6" maxlength="64" autocomplete="current-password" placeholder="비밀번호 (6자 이상)" />
+    </div>
+    <div class="start-actions"><button id="loginBtn" class="login-btn" type="button">로그인</button><button id="registerBtn" class="register-btn" type="button">회원가입</button></div>
+    <button id="guestBtn" class="guest-start" type="button">게스트로 시작</button>
+    <div id="startError" class="start-error"></div>
+    <div class="start-note">비밀번호는 이 사이트 코드나 localStorage에 저장하지 않고 Firebase Authentication이 처리합니다. 게스트 기록은 이 브라우저에만 저장됩니다.</div>
+  </div>
+</div>
+
+<div id="clearBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal"><div id="clearTitle" class="score-big">106 / 106</div><div class="time-row">클리어 타임：<span id="clearTime" class="time-value">00:00</span></div><div id="clearComment" class="comment">브롤러 지식만큼은 프로 랭크!</div><div class="modal-actions"><button class="close-btn" data-close="clear" type="button">닫기</button><button class="share-btn" data-share type="button">카카오톡 공유</button><button class="restart-btn" data-restart type="button">다시 하기</button></div></div></div>
+<div id="giveUpBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal"><h2 id="giveUpTitle" class="giveup-title">기권</h2><div class="score-big">정답：<span id="giveUpCount">0</span> / 106</div><div class="time-row">시간：<span id="giveUpTime" class="time-value">00:00</span></div><div id="giveUpComment" class="comment">다음엔 더 많이 맞힐 수 있어!</div><div class="modal-actions"><button class="close-btn" data-close="giveup" type="button">닫기</button><button class="share-btn" data-share type="button">카카오톡 공유</button><button class="restart-btn" data-restart type="button">다시 하기</button></div></div></div>
+<div id="recordsBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal wide"><h2>내 기록</h2><div id="recordModeText" class="muted"></div><div id="recordSummary" class="record-summary"></div><div id="recordsList" class="data-list"></div><div class="modal-actions" style="margin-top:14px"><button class="close-btn" data-close="records" type="button">닫기</button></div></div></div>
+<div id="rankingBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal wide"><h2>🏆 전체 랭킹</h2><div id="rankingInfo" class="muted">최고 정답 수 우선 · 동점이면 더 빠른 기록 우선</div><div id="rankingHelp" class="cloud-help hidden"></div><div id="rankingList" class="data-list" style="margin-top:12px"></div><div class="modal-actions" style="margin-top:14px"><button class="close-btn" data-close="ranking" type="button">닫기</button></div></div></div>
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.2/kakao.min.js"></script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+import { getFirestore, doc, setDoc, addDoc, collection, serverTimestamp, getDoc, getDocs, query, where, orderBy, limit, runTransaction } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 1) Firebase Console > 프로젝트 설정 > 내 앱(Web)의 firebaseConfig를 아래에 붙여넣으세요.
+// 2) Authentication > 로그인 방법 > 이메일/비밀번호 활성화
+// 3) Firestore Database 생성 후, 동봉된 firestore.rules를 배포
+// 4) Kakao Developers의 JavaScript 키를 KAKAO_JS_KEY에 입력하고 배포 도메인을 등록
+// ─────────────────────────────────────────────────────────────────────────────
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAhvFZABFtgts1yG4XaxxM1Dg3qMDYKqng",
+  authDomain: "brawlstarst1.firebaseapp.com",
+  projectId: "brawlstarst1",
+  storageBucket: "brawlstarst1.firebasestorage.app",
+  messagingSenderId: "540783423307",
+  appId: "1:540783423307:web:68f181043d271b2ff242ce",
+  measurementId: "G-D17P3V7YLL"
+};
+const KAKAO_JS_KEY = "5feeb72ad12f431d5f7a3cb590f5fd0c";
+
+const ASSET='https://raw.githubusercontent.com/nyar44/brawl-character-quiz/main/images/';
+const QUESTION=ASSET+'question.jpg.png';
+const TOTAL=106;
+  const brawlers = [
+    ['쉘리','shelly',1,['shelly']],
+    ['니타','nita',2,['nita']],
+    ['콜트','colt',3,['colt']],
+    ['불','bull',4,['bull']],
+    ['브록','brock',5,['brock']],
+    ['엘 프리모','elprimo',6,['엘프리모','el primo','elprimo']],
+    ['발리','barley',7,['barley']],
+    ['포코','poco',8,['poco']],
+    ['로사','rosa',9,['rosa']],
+    ['제시','jessie',10,['jessie','jessy']],
+    ['다이너마이크','dynamike',11,['다이나마이크','dynamike']],
+    ['틱','tick',12,['tick']],
+    ['8비트','8bit',13,['8-bit','8 bit','에잇비트','에이트비트']],
+    ['리코','rico',14,['rico']],
+    ['대릴','darryl',15,['darryl','데릴']],
+    ['페니','penny',16,['penny']],
+    ['칼','carl',17,['carl','카를']],
+    ['재키','jacky',18,['jacky','jackie']],
+    ['거스','gus',19,['gus']],
+    ['보','bo',20,['bo']],
+    ['엠즈','emz',21,['emz','EMZ']],
+    ['스튜','stu',22,['stu']],
+    ['파이퍼','piper',23,['piper']],
+    ['팸','pam',24,['pam','팜']],
+    ['프랭크','frank',25,['frank']],
+    ['비비','bibi',26,['bibi']],
+    ['비','bea',27,['bea']],
+    ['나니','nani',28,['nani']],
+    ['에드거','edgar',29,['edgar']],
+    ['그리프','griff',30,['griff']],
+    ['그롬','grom',31,['grom']],
+    ['보니','bonnie',32,['bonnie']],
+    ['게일','gale',33,['gale']],
+    ['콜레트','colette',34,['colette','콜렛']],
+    ['벨','belle',35,['belle']],
+    ['애쉬','ash',36,['ash','에쉬']],
+    ['롤라','lola',37,['lola']],
+    ['샘','sam',38,['sam']],
+    ['맨디','mandy',39,['mandy']],
+    ['메이지','maisie',40,['maisie','메이시']],
+    ['행크','hank',41,['hank']],
+    ['펄','pearl',42,['pearl']],
+    ['래리 & 로리','larrylawrie',43,['래리&로리','래리앤로리','래리와로리','larry & lawrie','larry and lawrie','larrylawrie']],
+    ['안젤로','angelo',44,['angelo']],
+    ['베리','berry',45,['berry']],
+    ['셰이드','shade',46,['shade','쉐이드']],
+    ['미플','meeple',47,['meeple','미플']],
+    ['트렁크','trunk',48,['trunk']],
+    ['볼트','bolt',49,['bolt']],
+    ['모티스','mortis',50,['mortis']],
+    ['타라','tara',51,['tara']],
+    ['진','gene',52,['gene']],
+    ['맥스','max',53,['max','MAX']],
+    ['미스터 P','mrp',54,['미스터p','미스터피','mr p','mr. p','mrp']],
+    ['스프라우트','sprout',55,['sprout']],
+    ['바이런','byron',56,['byron']],
+    ['스퀴크','squeak',57,['squeak','스퀵']],
+    ['루','lou',58,['lou']],
+    ['러프스','ruffs',59,['ruffs','러프']],
+    ['버즈','buzz',60,['buzz']],
+    ['팽','fang',61,['fang']],
+    ['이브','eve',62,['eve']],
+    ['자넷','janet',63,['janet','재닛']],
+    ['오티스','otis',64,['otis']],
+    ['버스터','buster',65,['buster']],
+    ['그레이','gray',66,['gray','grey']],
+    ['R-T','rt',67,['rt','r-t','알티','알-티']],
+    ['윌로우','willow',68,['willow']],
+    ['더그','doug',69,['doug','덕']],
+    ['척','chuck',70,['chuck']],
+    ['찰리','charlie',71,['charlie']],
+    ['미코','mico',72,['mico']],
+    ['멜로디','melodie',73,['melodie','melody']],
+    ['릴리','lily',74,['lily']],
+    ['클랜시','clancy',75,['clancy']],
+    ['모','moe',76,['moe']],
+    ['주주','juju',77,['juju']],
+    ['올리','ollie',78,['ollie']],
+    ['루미','lumi',79,['lumi']],
+    ['핑크스','finx',80,['finx','핀크스','핑스']],
+    ['재용','jaeyong',81,['재영','제용','jae yong','jae-yong','jaeyong']],
+    ['알리','alli',82,['alli','ally']],
+    ['미나','mina',83,['mina']],
+    ['지기','ziggy',84,['ziggy']],
+    ['지지','gigi',85,['gigi']],
+    ['나지아','najia',86,['najia','나쟈']],
+    ['글로이','glowy',87,['glowy','글로위']],
+    ['스타 노바','starrnova',88,['스타노바','starr nova','starrnova','star nova']],
+    ['데미안','damian',89,['damian','다미안']],
+    ['웬디','wendy',90,['wendy','웬디']],
+    ['스파이크','spike',91,['spike']],
+    ['크로우','crow',92,['crow']],
+    ['레온','leon',93,['leon']],
+    ['샌디','sandy',94,['sandy']],
+    ['앰버','amber',95,['amber','엠버']],
+    ['메그','meg',96,['meg']],
+    ['서지','surge',97,['surge']],
+    ['체스터','chester',98,['chester']],
+    ['코델리우스','cordelius',99,['cordelius','코델리어스']],
+    ['키트','kit',100,['kit']],
+    ['드라코','draco',101,['draco']],
+    ['켄지','kenji',102,['kenji']],
+    ['노리','nori',103,['nori']],
+    ['피어스','pierce',104,['pierce','피어스']],
+    ['카제','kaze',105,['kaze']],
+    ['시리우스','sirius',106,['sirius']]
+  ].map(([name,id,number,aliases]) => ({name,id,number,aliases,image:ASSET+id+'.jpg'}));
+
+function rarityClass(number){if(number===1)return'starter';if(number<=9)return'rare';if(number<=19)return'superrare';if(number<=49)return'epic';if(number<=90)return'mythic';if(number<=104)return'legendary';return'ultra'}
+function normalize(value){return String(value||'').normalize('NFKC').trim().toLowerCase().replace(/[·ㆍ.]/g,'').replace(/[＆&]/g,'and').replace(/[\s_\-]/g,'')}
+function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function fmt(sec){const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function formatDate(ms){try{return new Intl.DateTimeFormat('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(ms))}catch{return'-'}}
+
+const $=id=>document.getElementById(id);
+const grid=$('characterGrid'),answerInput=$('answer'),answerButton=$('answerButton'),giveUpButton=$('giveUpButton'),timerEl=$('timer'),countEl=$('count'),remainingEl=$('remaining');
+const clearBackdrop=$('clearBackdrop'),giveUpBackdrop=$('giveUpBackdrop'),recordsBackdrop=$('recordsBackdrop'),rankingBackdrop=$('rankingBackdrop'),startBackdrop=$('startBackdrop');
+const toast=$('toast'),toastText=$('toastText');
+const lookup=new Map();brawlers.forEach(b=>[b.name,b.id,...b.aliases].forEach(a=>lookup.set(normalize(a),b)));
+
+let auth=null,db=null,cloudReady=false,currentUser=null,currentNickname='',sessionMode='guest';
+let answered=new Set(),seconds=0,timerId=null,timerStarted=false,finished=false,soundEnabled=true,toastTimer=null,resultSaved=false;
+const LOCAL_KEY='brawl106.quiz.records.v2';
+
+function makeCard(b){const card=document.createElement('div');card.className='character '+rarityClass(b.number);card.dataset.number=b.number;card.innerHTML=`<span class="number">${String(b.number).padStart(3,'0')}</span><img class="portrait" src="${QUESTION}" alt="${String(b.number).padStart(3,'0')} 미정답 브롤러"><div class="character-name"></div>`;const img=card.querySelector('img');img.addEventListener('error',()=>{img.removeAttribute('src');img.alt='이미지를 불러오지 못했습니다';img.style.background='linear-gradient(135deg,#253e51,#7eb0cb)'});return card}
+brawlers.forEach(b=>grid.appendChild(makeCard(b)));
+
+function firebaseConfigured(){return FIREBASE_CONFIG.apiKey&&!FIREBASE_CONFIG.apiKey.startsWith('YOUR_')&&FIREBASE_CONFIG.projectId&&!FIREBASE_CONFIG.projectId.startsWith('YOUR_')}
+function kakaoConfigured(){return KAKAO_JS_KEY&&!KAKAO_JS_KEY.startsWith('YOUR_')}
+function showToast(message,type='dup'){clearTimeout(toastTimer);toastText.textContent=message;toast.className='toast show '+type;toastTimer=setTimeout(()=>toast.className='toast',1300)}
+function setSessionUI(){const dot=$('statusDot'),label=$('sessionLabel');if(sessionMode==='account'&&currentUser){dot.className='status-dot cloud';label.textContent=`${currentNickname||'회원'} · 클라우드 저장`; $('logoutBtn').classList.remove('hidden')}else{dot.className='status-dot guest';label.textContent='게스트 모드 · 이 기기에 저장';$('logoutBtn').classList.add('hidden')}}
+function openGame(){startBackdrop.classList.remove('show');setSessionUI();setTimeout(()=>answerInput.focus(),100)}
+
+async function nicknameEmail(nickname){const bytes=new TextEncoder().encode(normalize(nickname));const hash=await crypto.subtle.digest('SHA-256',bytes);const hex=[...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');return `u_${hex.slice(0,56)}@brawl106.invalid`}
+function validNickname(v){const n=String(v||'').trim();return n.length>=2&&n.length<=12&&!/[\n\r<>]/.test(n)}
+function friendlyAuthError(e){const c=e?.code||'';if(c.includes('email-already-in-use'))return'이미 사용 중인 닉네임이에요.';if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))return'닉네임 또는 비밀번호가 맞지 않아요.';if(c.includes('weak-password'))return'비밀번호는 6자 이상으로 입력해 주세요.';if(c.includes('too-many-requests'))return'시도가 너무 많아요. 잠시 후 다시 시도해 주세요.';if(!cloudReady)return'클라우드 설정이 아직 연결되지 않았어요.';return'로그인 처리 중 오류가 발생했어요.'}
+
+async function initCloud(){
+  if(!firebaseConfigured())return;
+  try{
+    const app=initializeApp(FIREBASE_CONFIG);auth=getAuth(app);db=getFirestore(app);cloudReady=true;
+    onAuthStateChanged(auth,async user=>{
+      currentUser=user||null;
+      if(user){
+        let nick=user.displayName||'';
+        try{const snap=await getDoc(doc(db,'users',user.uid));if(snap.exists())nick=snap.data().nickname||nick}catch{}
+        currentNickname=nick||'회원';
+        $('rememberedWrap').classList.remove('hidden');$('rememberedText').textContent=`현재 로그인: ${currentNickname}`;$('continueBtn').textContent=`${currentNickname}님으로 계속하기`;
+      }else{$('rememberedWrap').classList.add('hidden');currentNickname=''}
+    });
+  }catch(e){console.error(e);cloudReady=false}
+}
+await initCloud();
+
+$('continueBtn').addEventListener('click',()=>{if(currentUser){sessionMode='account';openGame()}});
+$('guestBtn').addEventListener('click',()=>{sessionMode='guest';currentUser=null;currentNickname='게스트';openGame()});
+$('loginBtn').addEventListener('click',async()=>{
+  const nick=$('nicknameInput').value.trim(),pw=$('passwordInput').value;$('startError').textContent='';
+  if(!cloudReady){$('startError').textContent='Firebase 설정 후 로그인 기능을 사용할 수 있어요. 지금은 게스트 플레이가 가능합니다.';return}
+  if(!validNickname(nick)||pw.length<6){$('startError').textContent='닉네임 2~12자, 비밀번호 6자 이상으로 입력해 주세요.';return}
+  try{const email=await nicknameEmail(nick);const cred=await signInWithEmailAndPassword(auth,email,pw);currentUser=cred.user;let snap=await getDoc(doc(db,'users',cred.user.uid));currentNickname=snap.exists()?snap.data().nickname:nick;sessionMode='account';openGame()}catch(e){$('startError').textContent=friendlyAuthError(e)}
+});
+$('registerBtn').addEventListener('click',async()=>{
+  const nick=$('nicknameInput').value.trim(),pw=$('passwordInput').value;$('startError').textContent='';
+  if(!cloudReady){$('startError').textContent='Firebase 설정 후 회원가입을 사용할 수 있어요. 지금은 게스트 플레이가 가능합니다.';return}
+  if(!validNickname(nick)||pw.length<6){$('startError').textContent='닉네임 2~12자, 비밀번호 6자 이상으로 입력해 주세요.';return}
+  try{const email=await nicknameEmail(nick);const cred=await createUserWithEmailAndPassword(auth,email,pw);await updateProfile(cred.user,{displayName:nick});await setDoc(doc(db,'users',cred.user.uid),{nickname:nick,createdAt:serverTimestamp()});currentUser=cred.user;currentNickname=nick;sessionMode='account';openGame();showToast('회원가입 완료! 랭킹 참여가 시작됩니다.','good')}catch(e){$('startError').textContent=friendlyAuthError(e)}
+});
+$('logoutBtn').addEventListener('click',async()=>{try{if(auth)await signOut(auth)}catch{}location.reload()});
+
+function startTimer(){if(timerStarted||finished)return;timerStarted=true;timerId=setInterval(()=>{seconds++;timerEl.textContent=fmt(seconds)},1000)}
+function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}}
+function beep(type){if(!soundEnabled)return;try{const AC=window.AudioContext||window.webkitAudioContext,ctx=new AC(),osc=ctx.createOscillator(),gain=ctx.createGain(),now=ctx.currentTime;osc.connect(gain);gain.connect(ctx.destination);if(type==='ok'){osc.type='square';osc.frequency.setValueAtTime(520,now);osc.frequency.exponentialRampToValueAtTime(820,now+.11);gain.gain.setValueAtTime(.08,now);gain.gain.exponentialRampToValueAtTime(.001,now+.14);osc.start(now);osc.stop(now+.15)}else if(type==='dup'){osc.type='triangle';osc.frequency.setValueAtTime(220,now);gain.gain.setValueAtTime(.06,now);gain.gain.exponentialRampToValueAtTime(.001,now+.13);osc.start(now);osc.stop(now+.14)}else{osc.type='sawtooth';osc.frequency.setValueAtTime(170,now);osc.frequency.exponentialRampToValueAtTime(105,now+.16);gain.gain.setValueAtTime(.07,now);gain.gain.exponentialRampToValueAtTime(.001,now+.18);osc.start(now);osc.stop(now+.19)}setTimeout(()=>ctx.close().catch(()=>{}),300)}catch{}}
+function reveal(b,missed=false){const card=grid.querySelector(`[data-number="${b.number}"]`);if(!card)return;card.classList.add('answered');if(missed)card.classList.add('revealed-missed');const img=card.querySelector('.portrait');img.src=b.image;img.alt=b.name;card.querySelector('.character-name').textContent=b.name;if(!missed){card.classList.remove('flash');void card.offsetWidth;card.classList.add('flash')}}
+function updateCount(){countEl.textContent=answered.size;remainingEl.textContent=TOTAL-answered.size}
+function checkAnswer(){if(finished)return;const raw=answerInput.value;answerInput.value='';const key=normalize(raw);if(!key)return;const b=lookup.get(key);if(!b){beep('bad');showToast('그 이름의 브롤러는 없어요!','bad');return}if(answered.has(b.id)){beep('dup');showToast('이미 맞힌 브롤러예요.','dup');return}answered.add(b.id);if(answered.size===1)startTimer();reveal(b);updateCount();beep('ok');showToast(`${b.name} 정답!`,'good');if(answered.size===TOTAL)finishClear()}
+
+const clearComments=['브롤러 지식만큼은 프로 랭크!','106명 전부? 이건 진짜 인정.','브롤스타즈 운영진 해도 되겠는데?','기억력 미쳤다. 완벽 클리어!','이 정도면 브롤러 도감 그 자체.'];
+const giveUpComments=['다음엔 더 많이 맞힐 수 있어!','아직 기억 안 난 브롤러가 꽤 있네!','한 번 더 하면 기록 갱신 가능!','놓친 브롤러 이름 확인하고 재도전!','여기까지도 충분히 많이 맞혔어.'];
+const randomFrom=a=>a[Math.floor(Math.random()*a.length)];
+function localRuns(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}}
+function saveLocalRun(run){const arr=localRuns();arr.unshift(run);localStorage.setItem(LOCAL_KEY,JSON.stringify(arr.slice(0,100)))}
+async function saveRun(status){if(resultSaved)return;resultSaved=true;const run={score:answered.size,timeSec:seconds,status,createdAtMs:Date.now(),mode:sessionMode,nickname:sessionMode==='account'?currentNickname:'게스트'};saveLocalRun(run);if(sessionMode!=='account'||!currentUser||!cloudReady)return;try{await addDoc(collection(db,'runs'),{uid:currentUser.uid,nickname:currentNickname,score:run.score,timeSec:run.timeSec,status,createdAt:serverTimestamp(),createdAtMs:run.createdAtMs});const bestRef=doc(db,'best',currentUser.uid);await runTransaction(db,async tx=>{const snap=await tx.get(bestRef);const old=snap.exists()?snap.data():null;const better=!old||run.score>old.bestScore||(run.score===old.bestScore&&run.timeSec<old.bestTimeSec);if(better)tx.set(bestRef,{uid:currentUser.uid,nickname:currentNickname,bestScore:run.score,bestTimeSec:run.timeSec,status,updatedAt:serverTimestamp(),updatedAtMs:run.createdAtMs},{merge:true})});showToast('기록이 클라우드에 저장됐어요.','good')}catch(e){console.error(e);showToast('로컬 저장 완료 · 클라우드 저장은 실패했어요.','bad')}}
+function finishClear(){finished=true;stopTimer();answerInput.disabled=true;answerButton.disabled=true;giveUpButton.disabled=true;$('clearTime').textContent=timerEl.textContent;$('clearComment').textContent=randomFrom(clearComments);clearBackdrop.classList.add('show');saveRun('clear')}
+function giveUp(){if(finished)return;if(!window.confirm('정말 기권할까요? 남은 정답이 모두 공개됩니다.'))return;finished=true;stopTimer();brawlers.forEach(b=>{if(!answered.has(b.id))reveal(b,true)});answerInput.disabled=true;answerButton.disabled=true;giveUpButton.disabled=true;$('giveUpCount').textContent=answered.size;$('giveUpTime').textContent=timerEl.textContent;$('giveUpComment').textContent=randomFrom(giveUpComments);giveUpBackdrop.classList.add('show');saveRun('giveup')}
+
+async function shareKakao(){const text=`브롤스타즈 106 브롤러 퀴즈\n${answered.size} / ${TOTAL}명 정답!\n기록 ${timerEl.textContent}`;const url=location.protocol.startsWith('http')?location.href.split('#')[0]:'https://example.com';if(kakaoConfigured()&&window.Kakao&&location.protocol.startsWith('http')){try{if(!Kakao.isInitialized())Kakao.init(KAKAO_JS_KEY);Kakao.Share.sendDefault({objectType:'text',text,link:{mobileWebUrl:url,webUrl:url}});return}catch(e){console.error(e)}}try{if(navigator.share&&location.protocol.startsWith('http')){await navigator.share({title:'브롤스타즈 106 브롤러 퀴즈',text,url});return}await navigator.clipboard.writeText(text+(location.protocol.startsWith('http')?'\n'+url:''));showToast('카카오 앱 키 미설정 · 기록 문구를 복사했어요.','dup')}catch{showToast('카카오 공유 설정이 필요해요.','bad')}}
+
+function summarizeRuns(arr){const bestScore=arr.reduce((m,r)=>Math.max(m,Number(r.score)||0),0),clears=arr.filter(r=>r.score===TOTAL),bestTime=clears.length?Math.min(...clears.map(r=>Number(r.timeSec)||999999)):null;return{plays:arr.length,bestScore,bestTime}}
+async function openRecords(){recordsBackdrop.classList.add('show');$('recordsList').innerHTML='<div class="muted">기록 불러오는 중…</div>';let arr=[];if(sessionMode==='account'&&currentUser&&cloudReady){$('recordModeText').textContent=`${currentNickname}님의 클라우드 기록`;try{const q=query(collection(db,'runs'),where('uid','==',currentUser.uid));const snap=await getDocs(q);arr=snap.docs.map(d=>d.data()).sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0)).slice(0,30)}catch(e){console.error(e);arr=localRuns().filter(r=>r.mode==='account'&&r.nickname===currentNickname);$('recordModeText').textContent='클라우드 조회 실패 · 이 기기 백업 기록 표시'}}else{$('recordModeText').textContent='게스트 기록 · 현재 브라우저에만 저장';arr=localRuns().filter(r=>r.mode==='guest')}
+  const s=summarizeRuns(arr);$('recordSummary').innerHTML=`<div class="summary-box"><b>${s.plays}</b><span>플레이</span></div><div class="summary-box"><b>${s.bestScore}/106</b><span>최고 정답</span></div><div class="summary-box"><b>${s.bestTime==null?'--:--':fmt(s.bestTime)}</b><span>최고 클리어</span></div>`;
+  $('recordsList').innerHTML=arr.length?arr.slice(0,30).map((r,i)=>`<div class="data-row"><span class="rank-no">#${i+1}</span><span>${r.status==='clear'?'✅ 클리어':'🏳️ 기권'} · ${esc(r.score)}/106</span><span>⏱ ${fmt(Number(r.timeSec)||0)}</span><span class="date-cell muted">${formatDate(r.createdAtMs)}</span></div>`).join(''):'<div class="muted">아직 저장된 기록이 없어요.</div>'}
+
+async function openRanking(){rankingBackdrop.classList.add('show');const list=$('rankingList'),help=$('rankingHelp');help.classList.add('hidden');if(sessionMode!=='account'){help.textContent='랭킹은 닉네임 계정으로 로그인한 유저만 참여·열람할 수 있어요. 새로고침 후 로그인하거나 회원가입해 주세요.';help.classList.remove('hidden');list.innerHTML='';return}if(!cloudReady){help.textContent='Firebase 설정이 필요합니다. SETUP.md의 1~3단계를 완료하면 랭킹이 활성화됩니다.';help.classList.remove('hidden');list.innerHTML='';return}list.innerHTML='<div class="muted">랭킹 불러오는 중…</div>';try{const q=query(collection(db,'best'),orderBy('bestScore','desc'),limit(100));const snap=await getDocs(q);let rows=snap.docs.map(d=>({id:d.id,...d.data()}));rows.sort((a,b)=>(b.bestScore-a.bestScore)||(a.bestTimeSec-b.bestTimeSec)||((a.updatedAtMs||0)-(b.updatedAtMs||0)));rows=rows.slice(0,100);list.innerHTML=rows.length?rows.map((r,i)=>`<div class="data-row ${r.id===currentUser.uid?'rank-me':''}"><span class="rank-no">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><span>${esc(r.nickname||'플레이어')}${r.id===currentUser.uid?' <b>(나)</b>':''}</span><span><b>${esc(r.bestScore)}/106</b> · ${fmt(Number(r.bestTimeSec)||0)}</span><span class="date-cell muted">${formatDate(r.updatedAtMs)}</span></div>`).join(''):'<div class="muted">아직 랭킹 기록이 없어요.</div>'}catch(e){console.error(e);help.textContent='랭킹을 불러오지 못했어요. Firestore 규칙과 인덱스 설정을 확인해 주세요.';help.classList.remove('hidden');list.innerHTML=''}}
+
+answerButton.addEventListener('click',checkAnswer);giveUpButton.addEventListener('click',giveUp);answerInput.addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer()});document.querySelectorAll('[data-restart]').forEach(b=>b.addEventListener('click',()=>location.reload()));document.querySelectorAll('[data-share]').forEach(b=>b.addEventListener('click',shareKakao));
+$('recordsBtn').addEventListener('click',openRecords);$('rankingBtn').addEventListener('click',openRanking);
+document.querySelector('[data-close="clear"]').addEventListener('click',()=>clearBackdrop.classList.remove('show'));document.querySelector('[data-close="giveup"]').addEventListener('click',()=>giveUpBackdrop.classList.remove('show'));document.querySelector('[data-close="records"]').addEventListener('click',()=>recordsBackdrop.classList.remove('show'));document.querySelector('[data-close="ranking"]').addEventListener('click',()=>rankingBackdrop.classList.remove('show'));
+const soundOnBtn=$('soundOnBtn'),soundOffBtn=$('soundOffBtn');function updateSound(){soundOnBtn.classList.toggle('active-on',soundEnabled);soundOffBtn.classList.toggle('active-off',!soundEnabled)}soundOnBtn.addEventListener('click',()=>{soundEnabled=true;updateSound();beep('ok')});soundOffBtn.addEventListener('click',()=>{soundEnabled=false;updateSound()});updateSound();setSessionUI();
+</script>
+</body>
+</html>
