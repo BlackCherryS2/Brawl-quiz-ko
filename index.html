@@ -50,7 +50,7 @@ button,input{font:inherit}.hidden{display:none!important}
   <div class="game-bar">
     <input id="answer" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="브롤러 이름 입력" aria-label="브롤러 이름 입력" />
     <button class="action answer-btn" id="answerButton" type="button">정답</button>
-    <button class="action giveup-btn" id="giveUpButton" type="button">기권</button>
+    <button class="action giveup-btn" id="giveUpButton" type="button">제출</button>
     <div class="game-info">⏱ <span id="timer">00:00</span></div>
     <div class="game-info">정답：<span id="count">0</span> / 106 &nbsp; 남은 수：<span id="remaining">106</span>명</div>
   </div>
@@ -64,7 +64,7 @@ button,input{font:inherit}.hidden{display:none!important}
 <div id="startBackdrop" class="modal-backdrop show" role="dialog" aria-modal="true">
   <div class="start-card">
     <div class="start-logo">BRAWL 106 QUIZ</div>
-    <div class="start-sub">닉네임 계정으로 로그인하면 기록이 클라우드에 저장되고 랭킹에 참여할 수 있어요.<br>로그인 없이 게스트로 바로 시작할 수도 있어요.</div>
+    <div class="start-sub">닉네임 계정으로 로그인하면 기록이 클라우드에 저장돼요. <b>106명 전부 클리어해야 랭킹에 등록됩니다.</b><br>정답은 공식 한국어명 또는 공식 영어명만 인정하며 <b>띄어쓰기는 생략해도 돼요.</b> 단, 래리 & 로리, R-T, 미스터 P는 지정된 표기도 정답으로 인정해요. 로그인 없이 게스트로 바로 시작할 수도 있어요.</div>
     <div id="rememberedWrap" class="hidden"><button id="continueBtn" class="continue-btn" type="button">로그인 계정으로 계속하기</button><div class="muted" id="rememberedText"></div></div>
     <div class="login-form">
       <input id="nicknameInput" maxlength="12" autocomplete="username" placeholder="닉네임 (2~12자)" />
@@ -78,9 +78,9 @@ button,input{font:inherit}.hidden{display:none!important}
 </div>
 
 <div id="clearBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal"><div id="clearTitle" class="score-big">106 / 106</div><div class="time-row">클리어 타임：<span id="clearTime" class="time-value">00:00</span></div><div id="clearComment" class="comment">브롤러 지식만큼은 프로 랭크!</div><div class="modal-actions"><button class="close-btn" data-close="clear" type="button">닫기</button><button class="share-btn" data-share type="button">카카오톡 공유</button><button class="restart-btn" data-restart type="button">다시 하기</button></div></div></div>
-<div id="giveUpBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal"><h2 id="giveUpTitle" class="giveup-title">기권</h2><div class="score-big">정답：<span id="giveUpCount">0</span> / 106</div><div class="time-row">시간：<span id="giveUpTime" class="time-value">00:00</span></div><div id="giveUpComment" class="comment">다음엔 더 많이 맞힐 수 있어!</div><div class="modal-actions"><button class="close-btn" data-close="giveup" type="button">닫기</button><button class="share-btn" data-share type="button">카카오톡 공유</button><button class="restart-btn" data-restart type="button">다시 하기</button></div></div></div>
+<div id="giveUpBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal"><h2 id="giveUpTitle" class="giveup-title">제출 결과</h2><div class="score-big">정답：<span id="giveUpCount">0</span> / 106</div><div class="time-row">시간：<span id="giveUpTime" class="time-value">00:00</span></div><div id="giveUpComment" class="comment">다음엔 더 많이 맞힐 수 있어!</div><div class="modal-actions"><button class="close-btn" data-close="giveup" type="button">닫기</button><button class="share-btn" data-share type="button">카카오톡 공유</button><button class="restart-btn" data-restart type="button">다시 하기</button></div></div></div>
 <div id="recordsBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal wide"><h2>내 기록</h2><div id="recordModeText" class="muted"></div><div id="recordSummary" class="record-summary"></div><div id="recordsList" class="data-list"></div><div class="modal-actions" style="margin-top:14px"><button class="close-btn" data-close="records" type="button">닫기</button></div></div></div>
-<div id="rankingBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal wide"><h2>🏆 전체 랭킹</h2><div id="rankingInfo" class="muted">최고 정답 수 우선 · 동점이면 더 빠른 기록 우선</div><div id="rankingHelp" class="cloud-help hidden"></div><div id="rankingList" class="data-list" style="margin-top:12px"></div><div class="modal-actions" style="margin-top:14px"><button class="close-btn" data-close="ranking" type="button">닫기</button></div></div></div>
+<div id="rankingBackdrop" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal wide"><h2>🏆 전체 랭킹</h2><div id="rankingInfo" class="muted">106명 전부 클리어한 유저만 등록 · 빠른 클리어 타임 순</div><div id="rankingHelp" class="cloud-help hidden"></div><div id="rankingList" class="data-list" style="margin-top:12px"></div><div class="modal-actions" style="margin-top:14px"><button class="close-btn" data-close="ranking" type="button">닫기</button></div></div></div>
 
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.2/kakao.min.js"></script>
 <script type="module">
@@ -109,116 +109,117 @@ const ASSET='https://raw.githubusercontent.com/nyar44/brawl-character-quiz/main/
 const QUESTION=ASSET+'question.jpg.png';
 const TOTAL=106;
   const brawlers = [
-    ['쉘리','shelly',1,['shelly']],
-    ['니타','nita',2,['nita']],
-    ['콜트','colt',3,['colt']],
-    ['불','bull',4,['bull']],
-    ['브록','brock',5,['brock']],
-    ['엘 프리모','elprimo',6,['엘프리모','el primo','elprimo']],
-    ['발리','barley',7,['barley']],
-    ['포코','poco',8,['poco']],
-    ['로사','rosa',9,['rosa']],
-    ['제시','jessie',10,['jessie','jessy']],
-    ['다이너마이크','dynamike',11,['다이나마이크','dynamike']],
-    ['틱','tick',12,['tick']],
-    ['8비트','8bit',13,['8-bit','8 bit','에잇비트','에이트비트']],
-    ['리코','rico',14,['rico']],
-    ['대릴','darryl',15,['darryl','데릴']],
-    ['페니','penny',16,['penny']],
-    ['칼','carl',17,['carl','카를']],
-    ['재키','jacky',18,['jacky','jackie']],
-    ['거스','gus',19,['gus']],
-    ['보','bo',20,['bo']],
-    ['엠즈','emz',21,['emz','EMZ']],
-    ['스튜','stu',22,['stu']],
-    ['파이퍼','piper',23,['piper']],
-    ['팸','pam',24,['pam','팜']],
-    ['프랭크','frank',25,['frank']],
-    ['비비','bibi',26,['bibi']],
-    ['비','bea',27,['bea']],
-    ['나니','nani',28,['nani']],
-    ['에드거','edgar',29,['edgar']],
-    ['그리프','griff',30,['griff']],
-    ['그롬','grom',31,['grom']],
-    ['보니','bonnie',32,['bonnie']],
-    ['게일','gale',33,['gale']],
-    ['콜레트','colette',34,['colette','콜렛']],
-    ['벨','belle',35,['belle']],
-    ['애쉬','ash',36,['ash','에쉬']],
-    ['롤라','lola',37,['lola']],
-    ['샘','sam',38,['sam']],
-    ['맨디','mandy',39,['mandy']],
-    ['메이지','maisie',40,['maisie','메이시']],
-    ['행크','hank',41,['hank']],
-    ['펄','pearl',42,['pearl']],
-    ['래리 & 로리','larrylawrie',43,['래리&로리','래리앤로리','래리와로리','larry & lawrie','larry and lawrie','larrylawrie']],
-    ['안젤로','angelo',44,['angelo']],
-    ['베리','berry',45,['berry']],
-    ['셰이드','shade',46,['shade','쉐이드']],
-    ['미플','meeple',47,['meeple','미플']],
-    ['트렁크','trunk',48,['trunk']],
-    ['볼트','bolt',49,['bolt']],
-    ['모티스','mortis',50,['mortis']],
-    ['타라','tara',51,['tara']],
-    ['진','gene',52,['gene']],
-    ['맥스','max',53,['max','MAX']],
-    ['미스터 P','mrp',54,['미스터p','미스터피','mr p','mr. p','mrp']],
-    ['스프라우트','sprout',55,['sprout']],
-    ['바이런','byron',56,['byron']],
-    ['스퀴크','squeak',57,['squeak','스퀵']],
-    ['루','lou',58,['lou']],
-    ['러프스','ruffs',59,['ruffs','러프']],
-    ['버즈','buzz',60,['buzz']],
-    ['팽','fang',61,['fang']],
-    ['이브','eve',62,['eve']],
-    ['자넷','janet',63,['janet','재닛']],
-    ['오티스','otis',64,['otis']],
-    ['버스터','buster',65,['buster']],
-    ['그레이','gray',66,['gray','grey']],
-    ['R-T','rt',67,['rt','r-t','알티','알-티']],
-    ['윌로우','willow',68,['willow']],
-    ['더그','doug',69,['doug','덕']],
-    ['척','chuck',70,['chuck']],
-    ['찰리','charlie',71,['charlie']],
-    ['미코','mico',72,['mico']],
-    ['멜로디','melodie',73,['melodie','melody']],
-    ['릴리','lily',74,['lily']],
-    ['클랜시','clancy',75,['clancy']],
-    ['모','moe',76,['moe']],
-    ['주주','juju',77,['juju']],
-    ['올리','ollie',78,['ollie']],
-    ['루미','lumi',79,['lumi']],
-    ['핑크스','finx',80,['finx','핀크스','핑스']],
-    ['재용','jaeyong',81,['재영','제용','jae yong','jae-yong','jaeyong']],
-    ['알리','alli',82,['alli','ally']],
-    ['미나','mina',83,['mina']],
-    ['지기','ziggy',84,['ziggy']],
-    ['지지','gigi',85,['gigi']],
-    ['나지아','najia',86,['najia','나쟈']],
-    ['글로이','glowy',87,['glowy','글로위']],
-    ['스타 노바','starrnova',88,['스타노바','starr nova','starrnova','star nova']],
-    ['데미안','damian',89,['damian','다미안']],
-    ['웬디','wendy',90,['wendy','웬디']],
-    ['스파이크','spike',91,['spike']],
-    ['크로우','crow',92,['crow']],
-    ['레온','leon',93,['leon']],
-    ['샌디','sandy',94,['sandy']],
-    ['앰버','amber',95,['amber','엠버']],
-    ['메그','meg',96,['meg']],
-    ['서지','surge',97,['surge']],
-    ['체스터','chester',98,['chester']],
-    ['코델리우스','cordelius',99,['cordelius','코델리어스']],
-    ['키트','kit',100,['kit']],
-    ['드라코','draco',101,['draco']],
-    ['켄지','kenji',102,['kenji']],
-    ['노리','nori',103,['nori']],
-    ['피어스','pierce',104,['pierce','피어스']],
-    ['카제','kaze',105,['kaze']],
-    ['시리우스','sirius',106,['sirius']]
-  ].map(([name,id,number,aliases]) => ({name,id,number,aliases,image:ASSET+id+'.jpg'}));
+    ['쉘리','Shelly','shelly',1],
+    ['니타','Nita','nita',2],
+    ['콜트','Colt','colt',3],
+    ['불','Bull','bull',4],
+    ['브록','Brock','brock',5],
+    ['엘 프리모','El Primo','elprimo',6],
+    ['발리','Barley','barley',7],
+    ['포코','Poco','poco',8],
+    ['로사','Rosa','rosa',9],
+    ['제시','Jessie','jessie',10],
+    ['다이너마이크','Dynamike','dynamike',11],
+    ['틱','Tick','tick',12],
+    ['8비트','8-Bit','8bit',13],
+    ['리코','Rico','rico',14],
+    ['대릴','Darryl','darryl',15],
+    ['페니','Penny','penny',16],
+    ['칼','Carl','carl',17],
+    ['재키','Jacky','jacky',18],
+    ['거스','Gus','gus',19],
+    ['보','Bo','bo',20],
+    ['엠즈','Emz','emz',21],
+    ['스튜','Stu','stu',22],
+    ['파이퍼','Piper','piper',23],
+    ['팸','Pam','pam',24],
+    ['프랭크','Frank','frank',25],
+    ['비비','Bibi','bibi',26],
+    ['비','Bea','bea',27],
+    ['나니','Nani','nani',28],
+    ['에드거','Edgar','edgar',29],
+    ['그리프','Griff','griff',30],
+    ['그롬','Grom','grom',31],
+    ['보니','Bonnie','bonnie',32],
+    ['게일','Gale','gale',33],
+    ['콜레트','Colette','colette',34],
+    ['벨','Belle','belle',35],
+    ['애쉬','Ash','ash',36],
+    ['롤라','Lola','lola',37],
+    ['샘','Sam','sam',38],
+    ['맨디','Mandy','mandy',39],
+    ['메이지','Maisie','maisie',40],
+    ['행크','Hank','hank',41],
+    ['펄','Pearl','pearl',42],
+    ['래리 & 로리','Larry & Lawrie','larrylawrie',43],
+    ['안젤로','Angelo','angelo',44],
+    ['베리','Berry','berry',45],
+    ['셰이드','Shade','shade',46],
+    ['미플','Meeple','meeple',47],
+    ['트렁크','Trunk','trunk',48],
+    ['볼트','Bolt','bolt',49],
+    ['모티스','Mortis','mortis',50],
+    ['타라','Tara','tara',51],
+    ['진','Gene','gene',52],
+    ['맥스','Max','max',53],
+    ['미스터 P','Mr. P','mrp',54],
+    ['스프라우트','Sprout','sprout',55],
+    ['바이런','Byron','byron',56],
+    ['스퀴크','Squeak','squeak',57],
+    ['루','Lou','lou',58],
+    ['러프스','Ruffs','ruffs',59],
+    ['버즈','Buzz','buzz',60],
+    ['팽','Fang','fang',61],
+    ['이브','Eve','eve',62],
+    ['자넷','Janet','janet',63],
+    ['오티스','Otis','otis',64],
+    ['버스터','Buster','buster',65],
+    ['그레이','Gray','gray',66],
+    ['R-T','R-T','rt',67],
+    ['윌로우','Willow','willow',68],
+    ['더그','Doug','doug',69],
+    ['척','Chuck','chuck',70],
+    ['찰리','Charlie','charlie',71],
+    ['미코','Mico','mico',72],
+    ['멜로디','Melodie','melodie',73],
+    ['릴리','Lily','lily',74],
+    ['클랜시','Clancy','clancy',75],
+    ['모','Moe','moe',76],
+    ['주주','Juju','juju',77],
+    ['올리','Ollie','ollie',78],
+    ['루미','Lumi','lumi',79],
+    ['핑크스','Finx','finx',80],
+    ['재용','Jae-Yong','jaeyong',81],
+    ['알리','Alli','alli',82],
+    ['미나','Mina','mina',83],
+    ['지기','Ziggy','ziggy',84],
+    ['지지','Gigi','gigi',85],
+    ['나지아','Najia','najia',86],
+    ['글로이','Glowy','glowy',87],
+    ['스타 노바','Starr Nova','starrnova',88],
+    ['데미안','Damian','damian',89],
+    ['웬디','Wendy','wendy',90],
+    ['스파이크','Spike','spike',91],
+    ['크로우','Crow','crow',92],
+    ['레온','Leon','leon',93],
+    ['샌디','Sandy','sandy',94],
+    ['앰버','Amber','amber',95],
+    ['메그','Meg','meg',96],
+    ['서지','Surge','surge',97],
+    ['체스터','Chester','chester',98],
+    ['코델리우스','Cordelius','cordelius',99],
+    ['키트','Kit','kit',100],
+    ['드라코','Draco','draco',101],
+    ['켄지','Kenji','kenji',102],
+    ['노리','Nori','nori',103],
+    ['피어스','Pierce','pierce',104],
+    ['카제','Kaze','kaze',105],
+    ['시리우스','Sirius','sirius',106]
+  ].map(([name,en,id,number]) => ({name,en,id,number,image:ASSET+id+'.jpg'}));
 
 function rarityClass(number){if(number===1)return'starter';if(number<=9)return'rare';if(number<=19)return'superrare';if(number<=49)return'epic';if(number<=90)return'mythic';if(number<=104)return'legendary';return'ultra'}
-function normalize(value){return String(value||'').normalize('NFKC').trim().toLowerCase().replace(/[·ㆍ.]/g,'').replace(/[＆&]/g,'and').replace(/[\s_\-]/g,'')}
+function normalize(value){return String(value||'').normalize('NFKC').trim().toLocaleLowerCase('en-US')}
+function normalizeAnswer(value){return normalize(value).replace(/\s+/g,'')}
 function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function fmt(sec){const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
 function formatDate(ms){try{return new Intl.DateTimeFormat('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(ms))}catch{return'-'}}
@@ -227,7 +228,23 @@ const $=id=>document.getElementById(id);
 const grid=$('characterGrid'),answerInput=$('answer'),answerButton=$('answerButton'),giveUpButton=$('giveUpButton'),timerEl=$('timer'),countEl=$('count'),remainingEl=$('remaining');
 const clearBackdrop=$('clearBackdrop'),giveUpBackdrop=$('giveUpBackdrop'),recordsBackdrop=$('recordsBackdrop'),rankingBackdrop=$('rankingBackdrop'),startBackdrop=$('startBackdrop');
 const toast=$('toast'),toastText=$('toastText');
-const lookup=new Map();brawlers.forEach(b=>[b.name,b.id,...b.aliases].forEach(a=>lookup.set(normalize(a),b)));
+const lookup=new Map();
+brawlers.forEach(b=>[b.name,b.en].forEach(a=>lookup.set(normalizeAnswer(a),b)));
+
+// 지정 예외 답안
+const larryLawrie=brawlers.find(b=>b.number===43);
+if(larryLawrie){
+  ['래리로리','래리&로리','래리앤로리'].forEach(a=>lookup.set(normalizeAnswer(a),larryLawrie));
+}
+const rtBrawler=brawlers.find(b=>b.number===67);
+if(rtBrawler){
+  ['RT','R-T','알티'].forEach(a=>lookup.set(normalizeAnswer(a),rtBrawler));
+}
+
+const mrPBrawler=brawlers.find(b=>b.name==='미스터 P' || b.en==='Mr. P');
+if(mrPBrawler){
+  ['미스터피','미스터P','Mr.P','Mister.P'].forEach(a=>lookup.set(normalizeAnswer(a),mrPBrawler));
+}
 
 let auth=null,db=null,cloudReady=false,currentUser=null,currentNickname='',sessionMode='guest';
 let answered=new Set(),seconds=0,timerId=null,timerStarted=false,finished=false,soundEnabled=true,toastTimer=null,resultSaved=false;
@@ -284,25 +301,68 @@ function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}}
 function beep(type){if(!soundEnabled)return;try{const AC=window.AudioContext||window.webkitAudioContext,ctx=new AC(),osc=ctx.createOscillator(),gain=ctx.createGain(),now=ctx.currentTime;osc.connect(gain);gain.connect(ctx.destination);if(type==='ok'){osc.type='square';osc.frequency.setValueAtTime(520,now);osc.frequency.exponentialRampToValueAtTime(820,now+.11);gain.gain.setValueAtTime(.08,now);gain.gain.exponentialRampToValueAtTime(.001,now+.14);osc.start(now);osc.stop(now+.15)}else if(type==='dup'){osc.type='triangle';osc.frequency.setValueAtTime(220,now);gain.gain.setValueAtTime(.06,now);gain.gain.exponentialRampToValueAtTime(.001,now+.13);osc.start(now);osc.stop(now+.14)}else{osc.type='sawtooth';osc.frequency.setValueAtTime(170,now);osc.frequency.exponentialRampToValueAtTime(105,now+.16);gain.gain.setValueAtTime(.07,now);gain.gain.exponentialRampToValueAtTime(.001,now+.18);osc.start(now);osc.stop(now+.19)}setTimeout(()=>ctx.close().catch(()=>{}),300)}catch{}}
 function reveal(b,missed=false){const card=grid.querySelector(`[data-number="${b.number}"]`);if(!card)return;card.classList.add('answered');if(missed)card.classList.add('revealed-missed');const img=card.querySelector('.portrait');img.src=b.image;img.alt=b.name;card.querySelector('.character-name').textContent=b.name;if(!missed){card.classList.remove('flash');void card.offsetWidth;card.classList.add('flash')}}
 function updateCount(){countEl.textContent=answered.size;remainingEl.textContent=TOTAL-answered.size}
-function checkAnswer(){if(finished)return;const raw=answerInput.value;answerInput.value='';const key=normalize(raw);if(!key)return;const b=lookup.get(key);if(!b){beep('bad');showToast('그 이름의 브롤러는 없어요!','bad');return}if(answered.has(b.id)){beep('dup');showToast('이미 맞힌 브롤러예요.','dup');return}answered.add(b.id);if(answered.size===1)startTimer();reveal(b);updateCount();beep('ok');showToast(`${b.name} 정답!`,'good');if(answered.size===TOTAL)finishClear()}
+function checkAnswer(){if(finished)return;const raw=answerInput.value;answerInput.value='';const key=normalizeAnswer(raw);if(!key)return;const b=lookup.get(key);if(!b){beep('bad');showToast('그 이름의 브롤러는 없어요!','bad');return}if(answered.has(b.id)){beep('dup');showToast('이미 맞힌 브롤러예요.','dup');return}answered.add(b.id);if(answered.size===1)startTimer();reveal(b);updateCount();beep('ok');showToast(`${b.name} 정답!`,'good');if(answered.size===TOTAL)finishClear()}
 
 const clearComments=['브롤러 지식만큼은 프로 랭크!','106명 전부? 이건 진짜 인정.','브롤스타즈 운영진 해도 되겠는데?','기억력 미쳤다. 완벽 클리어!','이 정도면 브롤러 도감 그 자체.'];
 const giveUpComments=['다음엔 더 많이 맞힐 수 있어!','아직 기억 안 난 브롤러가 꽤 있네!','한 번 더 하면 기록 갱신 가능!','놓친 브롤러 이름 확인하고 재도전!','여기까지도 충분히 많이 맞혔어.'];
 const randomFrom=a=>a[Math.floor(Math.random()*a.length)];
 function localRuns(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}}
 function saveLocalRun(run){const arr=localRuns();arr.unshift(run);localStorage.setItem(LOCAL_KEY,JSON.stringify(arr.slice(0,100)))}
-async function saveRun(status){if(resultSaved)return;resultSaved=true;const run={score:answered.size,timeSec:seconds,status,createdAtMs:Date.now(),mode:sessionMode,nickname:sessionMode==='account'?currentNickname:'게스트'};saveLocalRun(run);if(sessionMode!=='account'||!currentUser||!cloudReady)return;try{await addDoc(collection(db,'runs'),{uid:currentUser.uid,nickname:currentNickname,score:run.score,timeSec:run.timeSec,status,createdAt:serverTimestamp(),createdAtMs:run.createdAtMs});const bestRef=doc(db,'best',currentUser.uid);await runTransaction(db,async tx=>{const snap=await tx.get(bestRef);const old=snap.exists()?snap.data():null;const better=!old||run.score>old.bestScore||(run.score===old.bestScore&&run.timeSec<old.bestTimeSec);if(better)tx.set(bestRef,{uid:currentUser.uid,nickname:currentNickname,bestScore:run.score,bestTimeSec:run.timeSec,status,updatedAt:serverTimestamp(),updatedAtMs:run.createdAtMs},{merge:true})});showToast('기록이 클라우드에 저장됐어요.','good')}catch(e){console.error(e);showToast('로컬 저장 완료 · 클라우드 저장은 실패했어요.','bad')}}
+async function saveRun(status){
+  if(resultSaved)return;
+  resultSaved=true;
+  const run={score:answered.size,timeSec:seconds,status,createdAtMs:Date.now(),mode:sessionMode,nickname:sessionMode==='account'?currentNickname:'게스트'};
+  saveLocalRun(run);
+  if(sessionMode!=='account'||!currentUser||!cloudReady)return;
+  try{
+    await addDoc(collection(db,'runs'),{uid:currentUser.uid,nickname:currentNickname,score:run.score,timeSec:run.timeSec,status,createdAt:serverTimestamp(),createdAtMs:run.createdAtMs});
+    if(status==='clear' && run.score===TOTAL){
+      const bestRef=doc(db,'best',currentUser.uid);
+      await runTransaction(db,async tx=>{
+        const snap=await tx.get(bestRef);
+        const old=snap.exists()?snap.data():null;
+        const oldIsClear=old && Number(old.bestScore)===TOTAL && old.status==='clear';
+        const better=!oldIsClear || run.timeSec < Number(old.bestTimeSec);
+        if(better)tx.set(bestRef,{uid:currentUser.uid,nickname:currentNickname,bestScore:TOTAL,bestTimeSec:run.timeSec,status:'clear',updatedAt:serverTimestamp(),updatedAtMs:run.createdAtMs},{merge:true});
+      });
+      showToast('106명 클리어 기록이 랭킹에 저장됐어요.','good');
+    }else{
+      showToast('플레이 기록 저장 완료 · 랭킹은 106명 클리어 시 등록돼요.','good');
+    }
+  }catch(e){console.error(e);showToast('로컬 저장 완료 · 클라우드 저장은 실패했어요.','bad')}
+}
 function finishClear(){finished=true;stopTimer();answerInput.disabled=true;answerButton.disabled=true;giveUpButton.disabled=true;$('clearTime').textContent=timerEl.textContent;$('clearComment').textContent=randomFrom(clearComments);clearBackdrop.classList.add('show');saveRun('clear')}
-function giveUp(){if(finished)return;if(!window.confirm('정말 기권할까요? 남은 정답이 모두 공개됩니다.'))return;finished=true;stopTimer();brawlers.forEach(b=>{if(!answered.has(b.id))reveal(b,true)});answerInput.disabled=true;answerButton.disabled=true;giveUpButton.disabled=true;$('giveUpCount').textContent=answered.size;$('giveUpTime').textContent=timerEl.textContent;$('giveUpComment').textContent=randomFrom(giveUpComments);giveUpBackdrop.classList.add('show');saveRun('giveup')}
+function giveUp(){if(finished)return;if(!window.confirm('답안을 제출할까요? 남은 정답이 모두 공개됩니다.'))return;finished=true;stopTimer();brawlers.forEach(b=>{if(!answered.has(b.id))reveal(b,true)});answerInput.disabled=true;answerButton.disabled=true;giveUpButton.disabled=true;$('giveUpCount').textContent=answered.size;$('giveUpTime').textContent=timerEl.textContent;$('giveUpComment').textContent=randomFrom(giveUpComments);giveUpBackdrop.classList.add('show');saveRun('giveup')}
 
-async function shareKakao(){const text=`브롤스타즈 106 브롤러 퀴즈\n${answered.size} / ${TOTAL}명 정답!\n기록 ${timerEl.textContent}`;const url=location.protocol.startsWith('http')?location.href.split('#')[0]:'https://example.com';if(kakaoConfigured()&&window.Kakao&&location.protocol.startsWith('http')){try{if(!Kakao.isInitialized())Kakao.init(KAKAO_JS_KEY);Kakao.Share.sendDefault({objectType:'text',text,link:{mobileWebUrl:url,webUrl:url}});return}catch(e){console.error(e)}}try{if(navigator.share&&location.protocol.startsWith('http')){await navigator.share({title:'브롤스타즈 106 브롤러 퀴즈',text,url});return}await navigator.clipboard.writeText(text+(location.protocol.startsWith('http')?'\n'+url:''));showToast('카카오 앱 키 미설정 · 기록 문구를 복사했어요.','dup')}catch{showToast('카카오 공유 설정이 필요해요.','bad')}}
+async function shareKakao(){const text=`브롤스타즈 브롤러 퀴즈\n${answered.size} / ${TOTAL}명 정답!\n기록 ${timerEl.textContent}`;const url=location.protocol.startsWith('http')?location.href.split('#')[0]:'https://example.com';if(kakaoConfigured()&&window.Kakao&&location.protocol.startsWith('http')){try{if(!Kakao.isInitialized())Kakao.init(KAKAO_JS_KEY);Kakao.Share.sendDefault({objectType:'text',text,link:{mobileWebUrl:url,webUrl:url}});return}catch(e){console.error(e)}}try{if(navigator.share&&location.protocol.startsWith('http')){await navigator.share({title:'브롤스타즈 브롤러 퀴즈',text,url});return}await navigator.clipboard.writeText(text+(location.protocol.startsWith('http')?'\n'+url:''));showToast('카카오 앱 키 미설정 · 기록 문구를 복사했어요.','dup')}catch{showToast('카카오 공유 설정이 필요해요.','bad')}}
 
 function summarizeRuns(arr){const bestScore=arr.reduce((m,r)=>Math.max(m,Number(r.score)||0),0),clears=arr.filter(r=>r.score===TOTAL),bestTime=clears.length?Math.min(...clears.map(r=>Number(r.timeSec)||999999)):null;return{plays:arr.length,bestScore,bestTime}}
 async function openRecords(){recordsBackdrop.classList.add('show');$('recordsList').innerHTML='<div class="muted">기록 불러오는 중…</div>';let arr=[];if(sessionMode==='account'&&currentUser&&cloudReady){$('recordModeText').textContent=`${currentNickname}님의 클라우드 기록`;try{const q=query(collection(db,'runs'),where('uid','==',currentUser.uid));const snap=await getDocs(q);arr=snap.docs.map(d=>d.data()).sort((a,b)=>(b.createdAtMs||0)-(a.createdAtMs||0)).slice(0,30)}catch(e){console.error(e);arr=localRuns().filter(r=>r.mode==='account'&&r.nickname===currentNickname);$('recordModeText').textContent='클라우드 조회 실패 · 이 기기 백업 기록 표시'}}else{$('recordModeText').textContent='게스트 기록 · 현재 브라우저에만 저장';arr=localRuns().filter(r=>r.mode==='guest')}
   const s=summarizeRuns(arr);$('recordSummary').innerHTML=`<div class="summary-box"><b>${s.plays}</b><span>플레이</span></div><div class="summary-box"><b>${s.bestScore}/106</b><span>최고 정답</span></div><div class="summary-box"><b>${s.bestTime==null?'--:--':fmt(s.bestTime)}</b><span>최고 클리어</span></div>`;
-  $('recordsList').innerHTML=arr.length?arr.slice(0,30).map((r,i)=>`<div class="data-row"><span class="rank-no">#${i+1}</span><span>${r.status==='clear'?'✅ 클리어':'🏳️ 기권'} · ${esc(r.score)}/106</span><span>⏱ ${fmt(Number(r.timeSec)||0)}</span><span class="date-cell muted">${formatDate(r.createdAtMs)}</span></div>`).join(''):'<div class="muted">아직 저장된 기록이 없어요.</div>'}
+  $('recordsList').innerHTML=arr.length?arr.slice(0,30).map((r,i)=>`<div class="data-row"><span class="rank-no">#${i+1}</span><span>${r.status==='clear'?'✅ 클리어':'📤 제출'} · ${esc(r.score)}/106</span><span>⏱ ${fmt(Number(r.timeSec)||0)}</span><span class="date-cell muted">${formatDate(r.createdAtMs)}</span></div>`).join(''):'<div class="muted">아직 저장된 기록이 없어요.</div>'}
 
-async function openRanking(){rankingBackdrop.classList.add('show');const list=$('rankingList'),help=$('rankingHelp');help.classList.add('hidden');if(sessionMode!=='account'){help.textContent='랭킹은 닉네임 계정으로 로그인한 유저만 참여·열람할 수 있어요. 새로고침 후 로그인하거나 회원가입해 주세요.';help.classList.remove('hidden');list.innerHTML='';return}if(!cloudReady){help.textContent='Firebase 설정이 필요합니다. SETUP.md의 1~3단계를 완료하면 랭킹이 활성화됩니다.';help.classList.remove('hidden');list.innerHTML='';return}list.innerHTML='<div class="muted">랭킹 불러오는 중…</div>';try{const q=query(collection(db,'best'),orderBy('bestScore','desc'),limit(100));const snap=await getDocs(q);let rows=snap.docs.map(d=>({id:d.id,...d.data()}));rows.sort((a,b)=>(b.bestScore-a.bestScore)||(a.bestTimeSec-b.bestTimeSec)||((a.updatedAtMs||0)-(b.updatedAtMs||0)));rows=rows.slice(0,100);list.innerHTML=rows.length?rows.map((r,i)=>`<div class="data-row ${r.id===currentUser.uid?'rank-me':''}"><span class="rank-no">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><span>${esc(r.nickname||'플레이어')}${r.id===currentUser.uid?' <b>(나)</b>':''}</span><span><b>${esc(r.bestScore)}/106</b> · ${fmt(Number(r.bestTimeSec)||0)}</span><span class="date-cell muted">${formatDate(r.updatedAtMs)}</span></div>`).join(''):'<div class="muted">아직 랭킹 기록이 없어요.</div>'}catch(e){console.error(e);help.textContent='랭킹을 불러오지 못했어요. Firestore 규칙과 인덱스 설정을 확인해 주세요.';help.classList.remove('hidden');list.innerHTML=''}}
+async function openRanking(){
+  rankingBackdrop.classList.add('show');
+  const list=$('rankingList'),help=$('rankingHelp');
+  help.classList.add('hidden');
+  if(sessionMode!=='account'){
+    help.textContent='랭킹은 닉네임 계정으로 로그인한 유저만 열람할 수 있어요. 106명 전부를 맞힌 클리어 기록만 랭킹에 등록됩니다.';
+    help.classList.remove('hidden');list.innerHTML='';return;
+  }
+  if(!cloudReady){
+    help.textContent='Firebase 설정이 필요합니다. Firestore 연결과 보안 규칙을 확인해 주세요.';
+    help.classList.remove('hidden');list.innerHTML='';return;
+  }
+  list.innerHTML='<div class="muted">랭킹 불러오는 중…</div>';
+  try{
+    const snap=await getDocs(collection(db,'best'));
+    let rows=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(r=>Number(r.bestScore)===TOTAL && r.status==='clear' && Number.isFinite(Number(r.bestTimeSec)));
+    rows.sort((a,b)=>(Number(a.bestTimeSec)-Number(b.bestTimeSec))||((a.updatedAtMs||0)-(b.updatedAtMs||0)));
+    rows=rows.slice(0,100);
+    list.innerHTML=rows.length?rows.map((r,i)=>`<div class="data-row ${r.id===currentUser.uid?'rank-me':''}"><span class="rank-no">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><span>${esc(r.nickname||'플레이어')}${r.id===currentUser.uid?' <b>(나)</b>':''}</span><span><b>⏱ ${fmt(Number(r.bestTimeSec)||0)}</b></span><span class="date-cell muted">${formatDate(r.updatedAtMs)}</span></div>`).join(''):'<div class="muted">아직 106명을 모두 맞힌 랭커가 없어요.</div>';
+  }catch(e){console.error(e);help.textContent='랭킹을 불러오지 못했어요. Firestore 규칙을 확인해 주세요.';help.classList.remove('hidden');list.innerHTML=''}
+}
 
 answerButton.addEventListener('click',checkAnswer);giveUpButton.addEventListener('click',giveUp);answerInput.addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer()});document.querySelectorAll('[data-restart]').forEach(b=>b.addEventListener('click',()=>location.reload()));document.querySelectorAll('[data-share]').forEach(b=>b.addEventListener('click',shareKakao));
 $('recordsBtn').addEventListener('click',openRecords);$('rankingBtn').addEventListener('click',openRanking);
